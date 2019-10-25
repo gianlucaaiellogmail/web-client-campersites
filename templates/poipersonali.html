@@ -1,0 +1,46 @@
+    <div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 30px">
+				<h2 style="line-height: 36px;"><i class="fa fa-flag-o" style="margin-right: 5px;"></i><span translate>label.poipersonali</span></h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 20px;">
+				<div class="input-group input-group-lg">
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-success" ng-click="cercaVicino()"><i class="fa fa-crosshairs"></i></button>
+					</span>
+					<input id="cercaLuogo" type="text" class="form-control" placeholder="{{'label.cerca' | translate}}" ng-model="cercaLuogo" ng-keypress="cercaLuogoKeypress($event)" autocomplete="off" />
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-info" ng-click="cercaLuogoClick()"><i class="fa fa-search"></i></button>
+					</span>
+				</div>
+			</div>
+		</div>
+    </div>
+
+    <div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-9" style="margin-bottom: 20px;">
+				<div id="map" ng-style="{height: mapHeight + 'px'}"></div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 20px;">
+				<div class="modal-body">
+					<form name="formPoi">
+					  	<div class="form-group">
+					    	<label for="name" translate>label.nome</label>
+					    	<input type="text" class="form-control" id="name" placeholder="{{'label.nome' | translate}}" ng-model="stopPoint.name" required maxlength="250" />
+					  	</div>
+					  	<div class="form-group">
+					   		<label for="description" translate>label.description</label>
+					    	<input type="text" class="form-control" id="description" placeholder="{{'label.description' | translate}}" ng-model="stopPoint.description" maxlength="1000" />
+					  	</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+				  	<button ng-if="stopPoint.poiId" class="btn btn-danger" ng-click="deletePoi()"><i class="fa fa-trash" style="margin-right: 5px;"></i><span translate>label.elimina</span></button>
+				  	<button class="btn btn-success" ng-click="savePoi()" ng-disabled="!stopPoint.name"><i class="fa fa-hdd-o" style="margin-right: 5px;"></i><span translate>label.salva</span></button>
+				</div>
+			</div>
+		</div>
+    </div>

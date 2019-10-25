@@ -1,0 +1,31 @@
+    <div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 30px" ng-cloak>
+				<form name="formRestorePwd" novalidate="novalidate">
+					<div class="modal-header">
+						<h2 class="modal-title" translate>label.restorePwd</h2>
+						<div ng-if="system" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+					</div>
+					<div class="modal-body">
+						<div class="form-group" ng-class="{'has-error has-feedback': formRestorePwd.password.$invalid && formRestorePwd.$submitted, 'has-success has-feedback': formRestorePwd.password.$valid && formRestorePwd.$submitted}">
+							<label class="control-label" for="registraPassword" translate>label.password</label>
+							<input type="password" name="password" class="form-control" id="registraPassword" aria-describedby="registraPasswordStatus" ng-model="newPwd.password" ng-maxlength="50" required />
+							<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRestorePwd.password.$invalid && formRestorePwd.$submitted, 'glyphicon-ok': formRestorePwd.password.$valid && formRestorePwd.$submitted}" aria-hidden="true"></span>
+							<span id="registraPasswordStatus" class="sr-only">(success)</span>
+							<div class="text-danger" ng-show="formRestorePwd.password.$error && formRestorePwd.$submitted" ng-messages="formRestorePwd.password.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+						</div>
+						<div class="form-group" ng-class="{'has-error has-feedback': formRestorePwd.confirmPassword.$invalid && formRestorePwd.$submitted, 'has-success has-feedback': formRestorePwd.confirmPassword.$valid && formRestorePwd.$submitted}">
+							<label class="control-label" for="registraConfirmPassword" translate>label.confirmpassword</label>
+							<input type="password" name="confirmPassword" class="form-control" id="registraConfirmPassword" aria-describedby="registraConfirmPasswordStatus" ng-model="newPwd.confirmPassword" ng-maxlength="50" required same-as="newPwd.password" />
+							<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRestorePwd.confirmPassword.$invalid && formRestorePwd.$submitted, 'glyphicon-ok': formRestorePwd.confirmPassword.$valid && formRestorePwd.$submitted}" aria-hidden="true"></span>
+							<span id="registraConfirmPasswordStatus" class="sr-only">(success)</span>
+							<div class="text-danger" ng-show="formRestorePwd.confirmPassword.$error && formRestorePwd.$submitted" ng-messages="formRestorePwd.confirmPassword.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success text-uppercase" ng-click="sendRestorePwd(formRestorePwd)" translate>label.conferma</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

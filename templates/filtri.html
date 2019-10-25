@@ -1,0 +1,42 @@
+      <div class="row">
+        <div class="col-md-12">
+			<form name="formContattaci" novalidate="novalidate">
+				<div class="modal-header">
+					<h3 class="modal-title" translate>label.contattaci</h3>
+				</div>
+				<div class="modal-body">
+					<div class="form-group" ng-class="{'has-error has-feedback': formContattaci.Nome.$invalid && formContattaci.$submitted, 'has-success has-feedback': formContattaci.Nome.$valid && formContattaci.$submitted}">
+						<label class="control-label" for="contactNome" translate>label.nome</label>
+						<input type="text" name="Nome" class="form-control" id="contactNome" aria-describedby="contactNomeStatus" ng-model="contact.nome" ng-maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formContattaci.Nome.$invalid && formContattaci.$submitted, 'glyphicon-ok': formContattaci.Nome.$valid && formContattaci.$submitted}" aria-hidden="true"></span>
+						<span id="contactNomeStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formContattaci.Nome.$error && formContattaci.$submitted" ng-messages="formContattaci.Nome.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formContattaci.Email.$invalid && formContattaci.$submitted, 'has-success has-feedback': formContattaci.Email.$valid && formContattaci.$submitted}">
+						<label class="control-label" for="contactEmail" translate>label.email</label>
+						<input type="email" name="Email" class="form-control" id="contactEmail" aria-describedby="contactEmailStatus" ng-model="contact.email" ng-maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formContattaci.Email.$invalid && formContattaci.$submitted, 'glyphicon-ok': formContattaci.Email.$valid && formContattaci.$submitted}" aria-hidden="true"></span>
+						<span id="contactEmailStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formContattaci.Email.$error && formContattaci.$submitted" ng-messages="formContattaci.Email.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formContattaci.Messaggio.$invalid && formContattaci.$submitted, 'has-success has-feedback': formContattaci.Messaggio.$valid && formContattaci.$submitted}">
+						<label class="control-label" for="contactMessaggio" translate>label.messaggio</label>
+						<textarea name="Messaggio" class="form-control" id="contactMessaggio" aria-describedby="contactMessaggioStatus" ng-model="contact.messaggio" ng-maxlength="2000" rows="3" required ></textarea>
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formContattaci.Messaggio.$invalid && formContattaci.$submitted, 'glyphicon-ok': formContattaci.Messaggio.$valid && formContattaci.$submitted}" aria-hidden="true"></span>
+						<span id="contactMessaggioStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formContattaci.Messaggio.$error && formContattaci.$submitted" ng-messages="formContattaci.Messaggio.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formContattaci.RealPerson.$invalid && formContattaci.$submitted, 'has-success has-feedback': formContattaci.RealPerson.$valid && formContattaci.$submitted}">
+						<label class="control-label" for="entroRealPerson">{{'label.realperson' | translate}}<captcha field1="{{field1}}" operator="{{operator}}" field2="{{field2}}"></captcha></label>
+						<input type="number" name="RealPerson" class="form-control" id="entroRealPerson" aria-describedby="entroRealPersonStatus" ng-model="contact.realperson" ng-maxlength="5" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formContattaci.RealPerson.$invalid && formContattaci.$submitted, 'glyphicon-ok': formContattaci.RealPerson.$valid && formContattaci.$submitted}" aria-hidden="true"></span>
+						<span id="entroRealPersonStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formContattaci.RealPerson.$error && formContattaci.$submitted" ng-messages="formContattaci.RealPerson.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success text-uppercase" ng-click="contact(formContattaci)" translate>label.spedisci</button>
+				</div>
+			</form>
+       </div>
+      </div>	  

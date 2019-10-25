@@ -1,0 +1,134 @@
+    <div>
+		<div class="jumbotron" style="{{getBackground()}}">
+		  <div class="container">
+			<h1>CamperSites</h1>
+			<h4 translate="desc.statistiche" translate-values='{soste: "27.000"}'></h4>
+			<div class="well" style="background-color: rgba(245, 245, 245, 0.4);">
+				<div class="input-group input-group-lg">
+					<span class="input-group-btn">
+						<button ng-if="user" type="button" class="btn btn-primary" ng-click="goNewArea()"><i class="fa fa-map-marker"></i><span style="margin-left: 5px;" class="hidden-xs" translate>label.aggiungisosta</span></button>
+						<button type="button" class="btn btn-success" ng-click="cercaVicino()"><i class="fa fa-crosshairs"></i></button>
+					</span>
+					<input id="cercaLuogo" type="text" class="form-control" placeholder="{{'label.cerca' | translate}}" ng-model="cercaLuogo" ng-keypress="cercaLuogoKeypress($event)" autocomplete="off" />
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-info hidden-xs" ng-click="cercaLuogoClick()"><i class="fa fa-search"></i></button>
+						<!-- <button type="button" class="btn btn-success"><i class="fa fa-filter"></i></button> -->
+						<button type="button" class="btn btn-primary" ng-click="toggleRouteTrip()"><i class="fa fa-road"></i><span style="margin-left: 5px;" class="hidden-xs" translate>label.creaviaggio</span></button>
+					</span>
+				</div>
+			</div>
+		  </div> <!-- /container -->
+		</div>
+    </div>
+
+    <div class="container-fluid bg-info" style="height: 15px">
+    </div>
+
+    <div class="container-fluid">
+		<div class="row-fluid">
+			<div ng-show="viewRouteTrip" ng-class="{'col-xs-12 col-sm-4 col-md-4 col-lg-3': viewRouteTrip}">
+				<div class="modal-header">
+					<h4 class="modal-title list-group-item" translate>desc.creaviaggio</h4>
+					<div ng-if="user" class="list-group-item">
+						<label translate>label.viaggisalvati</label>
+						<select class="form-control" ng-options="saved.name for saved in tripSaved" ng-model="currentTrip" ng-change="setCurrentTrip(currentTrip)">
+						</select>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="form-horizontal">
+						<div>
+							<div class="form-group" auto-complete ng-repeat="tripStep in tripSteps" trip-index="{{tripIndex}}" ng-init="tripIndex = 'tripStep' + $index">
+								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">
+									<label class="control-label">
+										<span ng-if="$index == 0" translate>label.da</span>
+										<span ng-if="$index == (tripSteps.length - 1)" translate>label.a</span>
+										<span ng-if="$index > 0 && $index < (tripSteps.length - 1)" translate>label.via</span>
+									</label>
+								</div>
+								<div class="input-group col-xs-10 col-sm-10 col-md-10 col-lg-11">
+									<input id="{{tripIndex}}" type="text" class="form-control" placeholder="{{'label.cerca' | translate}}" maxlength="100" ng-model="tripStep.name" ng-keypress="tripKeypress($event, tripIndex)" autocomplete="off" autofill />
+									<span class="input-group-btn">
+										<button class="btn btn-default" ng-click="removeStep(tripStep)" ng-if="tripSteps.length > 2"><i class="fa fa-times"></i></button>
+									</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-1 col-lg-11">
+									<button class="btn btn-default" ng-click="addStep()" ng-disabled="tripSteps.length == 8"><i class="fa fa-plus-circle" style="margin-right: 5px;"></i><span translate>label.addstep</span></button>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-1 col-lg-11">
+									<input id="avoidHighways" type="checkbox" ng-model="avoidHighways" /><label style="margin-left:5%;" for="avoidHighways" translate>label.evitaautostrade</label>
+    							</div>
+    						</div>
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-1 col-lg-11">
+									<input id="avoidTolls" type="checkbox" ng-model="avoidTolls" /><label style="margin-left:5%;" for="avoidTolls" translate>label.evitapedaggi</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-1 col-lg-11">
+									<input id="avoidFerries" type="checkbox" ng-model="avoidFerries" /><label style="margin-left:5%;" for="avoidFerries" translate>label.evitatraghetti</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-1 col-lg-11">
+									<button class="btn btn-primary" ng-click="routeTrip()" ng-disabled="!tripSteps[0].name || !tripSteps[tripSteps.length - 1].name"><i class="fa fa-refresh" style="margin-right: 5px;"></i><span translate>label.calcola</span></button>
+								</div>
+							</div>			
+						</div>
+						<div ng-if="routes.length > 0" class="modal-footer" style="text-align: left;">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 list-group">
+								<div ng-repeat="route in routes" class="well list-group-item">
+									<label><span translate>label.tappa</span> {{$index + 1}} - {{route.distance.text}}</label>
+				        			<p>{{route.start_address}}</p>
+				        			<p>{{route.end_address}}</p>
+				    			</div>
+							</div>
+						</div>
+						<div ng-if="user" class="modal-footer">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="{{'label.nome' | translate}}" maxlength="100" ng-model="currentTrip.name" />
+									<span class="input-group-btn">
+										<button class="btn btn-success" ng-click="saveTrip()" ng-disabled="!currentTrip.name"><i class="fa fa-hdd-o" style="margin-right: 5px;"></i><span translate>label.salva</span></button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div ng-if="user" class="modal-footer">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<button type="button" class="btn btn-danger" ng-click="toggleRouteTrip()"><i class="fa fa-times" style="margin-right: 5px;"></i><span translate>label.chiudi</span></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-class="{'col-xs-12 col-sm-12 col-md-12 col-lg-12': !viewRouteTrip, 'col-xs-12 col-sm-8 col-md-8 col-lg-9': viewRouteTrip}">
+				<button ng-if="user" type="button" class="btn btn-default btn-lg btn-poi-personali" ng-class="{'active': viewPoiPersonali}" ng-click="togglePoiPersonali()"><i class="fa fa-thumb-tack"></i><span style="margin-left: 5px;" class="hidden-xs" translate>label.poipersonali</span></button>
+				<div id="map" ng-style="{height: mapHeight + 'px'}"></div>
+			</div>
+		</div>
+    </div>
+
+    <div class="container-fluid bg-info" style="height: 15px">
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+			<ng-include src="'includes/stoppoints_newest.html'"></ng-include>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+			<ng-include src="'includes/stoppoints_top.html'"></ng-include>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+			<ng-include src="'includes/users_top.html'"></ng-include>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+			<ng-include src="'includes/reviews_newest.html'"></ng-include>
+        </div>
+      </div>
+    </div> <!-- /container -->

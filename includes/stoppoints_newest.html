@@ -1,0 +1,13 @@
+	<div class="panel panel-primary" ng-controller="stopPointsNewestController">
+		<div class="panel-heading"><h4><i class="fa fa-clock-o fa-fw fa-lg" style="margin-right: 5px;"></i><span translate>label.lastaggiornate</span></h4></div>
+		<div class="panel-body">
+			<div class="list-group">
+				<a ng-href="detail/{{stopPoint.stopId}}"  class="list-group-item avatar-left" ng-repeat="stopPoint in stopPointsNewest">
+					<img style="top: 10px; left: 0px;" ng-src="img/icons/{{::stopPoint.typeId}}.png">
+					<p class="text-uppercase text-primary text-nowrap" style="margin: 0 0 0px 0; overflow: hidden; text-overflow: ellipsis;"><strong>{{::stopPoint.description}}</strong></p>
+					<p class="list-group-item-text text-nowrap" style="overflow: hidden; text-overflow: ellipsis;"><strong>{{'nations.'+stopPoint.nation | translate}}</strong> - {{::stopPoint.locality}}<span class="badge" style="float: right;">{{::stopPoint.modified | date:'dd MMM yyyy'}}</span></p>
+				</a>
+				<div ng-if="errore" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+			</div>
+		</div>
+	</div>

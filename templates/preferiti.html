@@ -1,0 +1,48 @@
+    <div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 30px">
+				<h2 style="line-height: 36px;"><i class="fa fa-heart-o" style="margin-right: 5px;"></i><span translate>label.preferiti</span></h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="stopPoint in stopPoints">
+				<a ng-href="/detail/{{::stopPoint.stopId}}" style="text-decoration: none;">
+					<div class="panel panel-primary" style="height: 353px;">
+						<div class="panel-heading" style="overflow: hidden;">
+							<div class="detail-img"><img ng-src="img/icons/{{::stopPoint.typeId}}.png" height="24px"></div>
+							<div>
+								<h4 class="text-nowrap" style="margin: 0px; overflow: hidden; text-overflow: ellipsis;">{{::stopPoint.description}}</h4>
+								<p class="text-nowrap" style="margin-bottom: 0px; overflow: hidden; text-overflow: ellipsis;"><strong>{{'nations.'+stopPoint.nation | translate}}</strong> - {{::stopPoint.locality}}</p>
+							</div>
+						</div>
+						<div class="panel-body">
+							<p style="margin: 0;"><span translate>label.rating</span>: <strong>{{::stopPoint.rating}}%</strong></p>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{::stopPoint.rating}}" aria-valuemin="0" aria-valuemax="100" style="width: {{::stopPoint.rating}}%"></div>
+							</div>
+							<p><span translate>label.notte</span>: <label ng-class="getNotteClass(stopPoint)">{{getNotte(stopPoint)}}</label></p>
+							<p><span translate>label.prezzo</span>: <label ng-class="getPrezzoClass(stopPoint.prezzo)">{{getPrezzo(stopPoint.prezzo)}}</label></p>
+							<p><span translate>label.chiusura</span>: <label class="text-danger">{{getChiusura(stopPoint)}}</label></p>
+							<p>
+								<img ng-if="stopPoint.acqua" src="img/icons/acqua.png" title="{{'label.acqua' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.scaricoCassetta" src="img/icons/scaricoCassetta.png" title="{{'label.scaricoCassetta' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.scaricoPozzetto" src="img/icons/scaricoPozzetto.png" title="{{'label.scaricoPozzetto' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.corrente" src="img/icons/corrente.png" title="{{'label.corrente' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.accessoCustodito" src="img/icons/accessoCustodito.png" title="{{'label.accessoCustodito' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.videosorveglianza" src="img/icons/videosorveglianza.png" title="{{'label.videosorveglianza' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.illuminazione" src="img/icons/illuminazione.png" title="{{'label.illuminazione' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.ombra" src="img/icons/ombra.png" title="{{'label.ombra' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.docce" src="img/icons/docce.png" title="{{'label.docce' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.bagni" src="img/icons/bagni.png" title="{{'label.bagni' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.bambini" src="img/icons/bambini.png" title="{{'label.bambini' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.picnic" src="img/icons/picnic.png" title="{{'label.picnic' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.animali" src="img/icons/animali.png" title="{{'label.animali' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.fermata" src="img/icons/fermata.png" title="{{'label.fermata' | translate}}" class="padding-right">
+								<img ng-if="stopPoint.wifi" src="img/icons/wifi.png" title="{{'label.wifi' | translate}}" class="padding-right">
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+    </div>

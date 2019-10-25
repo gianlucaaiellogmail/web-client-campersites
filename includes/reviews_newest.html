@@ -1,0 +1,12 @@
+	<div class="panel panel-primary" ng-controller="reviewsNewestController">
+		<div class="panel-heading"><h4><i class="fa fa-comments-o fa-fw fa-lg" style="margin-right: 5px;"></i><span translate>label.lastreviews</span></h4></div>
+		<div class="panel-body">
+			<div class="list-group">
+				<a ng-href="detail/{{review.stopPointId}}" class="list-group-item" ng-repeat="review in reviewsNewest">
+					<p><strong class="text-uppercase text-primary text-nowrap" style="margin: 0 0 0px 0; overflow: hidden; text-overflow: ellipsis;">{{::review.user}}</strong></p>
+					<p class="list-group-item-text" style="overflow: hidden;"><em>{{::review.review}}</em><span class="badge" style="float: right;">{{::review.modified | date:'dd MMM yyyy'}}</span></p>
+				</a>
+				<div ng-if="errore" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+			</div>
+		</div>
+	</div>

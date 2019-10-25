@@ -1,0 +1,476 @@
+    <div class="container-fluid">
+		<div class="row">
+			<div id="modify" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 50px">
+	  			<form name="formModifica" novalidate="novalidate">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h4><span translate>label.generalinformation</span></h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 20px;">
+								<div class="input-group input-group-lg">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-success" ng-click="cercaVicino()"><i class="fa fa-crosshairs"></i></button>
+									</span>
+									<input id="cercaLuogo" type="text" class="form-control" placeholder="{{'label.cerca' | translate}}" ng-model="cercaLuogo" ng-keypress="cercaLuogoKeypress($event)" autocomplete="off" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-info" ng-click="cercaLuogoClick()"><i class="fa fa-search"></i></button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-7">
+								<label><i class="fa fa-info-circle" style="margin-right: 5px;"></i><span translate>desc.nuovomarker</span></label>
+								<div id="map" class="thumbnail" style="height: 510px">
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-5">
+								<div>
+									<div class="form-group">
+										<label class="control-label" style="display: table;" for="typeId" translate>label.tipososta</label>
+										<div class="btn-group btn-group-lg" data-toggle="buttons">
+							                <label class="btn btn-default" ng-class="{active: stopPoint.typeId == 'PS'}">
+							                    <input type="radio" id="typeId" class="form-control" name="typeId" ng-model="stopPoint.typeId" ng-checked="stopPoint.typeId == 'PS'" value="PS" /><img class="img-button" ng-src="img/icons/PS.png">
+							                </label> 
+							                <label class="btn btn-default" ng-class="{active: stopPoint.typeId == 'AA'}">
+							                    <input type="radio" id="typeId" class="form-control" name="typeId" ng-model="stopPoint.typeId" ng-checked="stopPoint.typeId == 'AA'" value="AA" /><img class="img-button" ng-src="img/icons/AA.png">
+							                </label> 
+							                <label class="btn btn-default" ng-class="{active: stopPoint.typeId == 'AC'}">
+							                    <input type="radio" id="typeId" class="form-control" name="typeId" ng-model="stopPoint.typeId" ng-checked="stopPoint.typeId == 'AC'" value="AC" /><img class="img-button" ng-src="img/icons/AC.png">
+							                </label> 
+							                <label class="btn btn-default" ng-class="{active: stopPoint.typeId == 'CA'}">
+							                    <input type="radio" id="typeId" class="form-control" name="typeId" ng-model="stopPoint.typeId" ng-checked="stopPoint.typeId == 'CA'" value="CA" /><img class="img-button" ng-src="img/icons/CA.png">
+							                </label> 
+							                <label class="btn btn-default" ng-class="{active: stopPoint.typeId == 'CS'}">
+							                    <input type="radio" id="typeId" class="form-control" name="typeId" ng-model="stopPoint.typeId" ng-checked="stopPoint.typeId == 'CS'" value="CS" /><img class="img-button" ng-src="img/icons/CS.png">
+							                </label>
+							            </div>
+										<label class="text-capitalize" style="margin-left: 5px;">{{'label.'+stopPoint.typeId | translate}}</label>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.latitude.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.latitude.$valid && formModifica.$submitted}">
+											<label class="control-label" for="latitude" translate>label.latitude</label>
+											<input type="number" name="latitude" class="form-control" id="latitude" aria-describedby="latitudeStatus" ng-model="stopPoint.latitude" required pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.latitude.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.latitude.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="latitudeStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.latitude.$error && formModifica.$submitted" ng-messages="formModifica.latitude.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.longitude.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.longitude.$valid && formModifica.$submitted}">
+											<label class="control-label" for="longitude" translate>label.longitude</label>
+											<input type="number" name="longitude" class="form-control" id="longitude" aria-describedby="longitudeStatus" ng-model="stopPoint.longitude" required pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.longitude.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.longitude.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="longitudeStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.longitude.$error && formModifica.$submitted" ng-messages="formModifica.longitude.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error has-feedback': formModifica.description.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.description.$valid && formModifica.$submitted}">
+											<label class="control-label" for="description" translate>label.description</label>
+											<input type="text" name="description" class="form-control" id="description" aria-describedby="descriptionStatus" ng-model="stopPoint.description" required maxlength="100" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.description.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.description.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="descriptionStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.description.$error && formModifica.$submitted" ng-messages="formModifica.description.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error has-feedback': formModifica.locality.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.locality.$valid && formModifica.$submitted}">
+											<label class="control-label" for="locality" translate>label.locality</label>
+											<input type="text" name="locality" class="form-control" id="locality" aria-describedby="localityStatus" ng-model="stopPoint.locality" required maxlength="100" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.locality.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.locality.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="localityStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.locality.$error && formModifica.$submitted" ng-messages="formModifica.locality.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error has-feedback': formModifica.homepage.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.homepage.$valid && formModifica.$submitted}">
+											<label class="control-label" for="homepage" translate>label.homepage</label>
+											<input type="url" name="homepage" class="form-control" id="homepage" aria-describedby="homepageStatus" ng-model="stopPoint.homepage" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.homepage.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.homepage.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="homepageStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.homepage.$error && formModifica.$submitted" ng-messages="formModifica.homepage.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.telefono.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.telefono.$valid && formModifica.$submitted}">
+											<label class="control-label" for="telefono" translate>label.telefono</label>
+											<input type="text" name="telefono" class="form-control" id="telefono" aria-describedby="telefonoStatus" ng-model="stopPoint.telefono" maxlength="45" pattern="^[\+]+\d+$" placeholder="+xxxxxxxx" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.telefono.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.telefono.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="telefonoStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.telefono.$error && formModifica.$submitted" ng-messages="formModifica.telefono.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.chiusura.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.chiusura.$valid && formModifica.$submitted}">
+											<label class="control-label" for="chiusura" translate>label.chiusuraperiodo</label>
+											<input type="text" name="chiusura" class="form-control" id="chiusura" aria-describedby="chiusuraStatus" ng-model="stopPoint.chiusura" maxlength="11" pattern="^[0-3][0-9]/[0-1][0-9]-[0-3][0-9]/[0-1][0-9]$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.chiusura.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.chiusura.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="chiusuraStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.chiusura.$error && formModifica.$submitted" ng-messages="formModifica.chiusura.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.posti.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.posti.$valid && formModifica.$submitted}">
+											<label class="control-label" for="posti" translate>label.posti</label>
+											<input type="number" name="posti" class="form-control" id="posti" aria-describedby="postiStatus" ng-model="stopPoint.posti" pattern="^\d+$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.posti.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.posti.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="postiStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.posti.$error && formModifica.$submitted" ng-messages="formModifica.posti.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.maxHH.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.maxHH.$valid && formModifica.$submitted}">
+											<label class="control-label" for="maxHH" translate>label.maxHH</label>
+											<input type="number" name="maxHH" class="form-control" id="maxHH" aria-describedby="maxHHStatus" ng-model="stopPoint.maxHH" pattern="^\d+$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.maxHH.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.maxHH.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="maxHHStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.maxHH.$error && formModifica.$submitted" ng-messages="formModifica.maxHH.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h4><span translate>label.costsandservices</span></h4>
+							</div>
+							<div class="panel-body">
+								<div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoNotturno.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoNotturno.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoNotturno" translate>label.prezzoNotturno</label>
+											<input type="number" name="prezzoNotturno" class="form-control" id="prezzoNotturno" aria-describedby="prezzoNotturnoStatus" ng-model="stopPoint.prezzoNotturno" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoNotturno.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoNotturno.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoNotturnoStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoNotturno.$error && formModifica.$submitted" ng-messages="formModifica.prezzoNotturno.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoOrario.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoOrario.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoOrario" translate>label.prezzoOrario</label>
+											<input type="number" name="prezzoOrario" class="form-control" id="prezzoOrario" aria-describedby="prezzoOrarioStatus" ng-model="stopPoint.prezzoOrario" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoOrario.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoOrario.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoOrarioStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoOrario.$error && formModifica.$submitted" ng-messages="formModifica.prezzoOrario.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoGiornaliero.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoGiornaliero.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoGiornaliero" translate>label.prezzoGiornaliero</label>
+											<input type="number" name="prezzoGiornaliero" class="form-control" id="prezzoGiornaliero" aria-describedby="prezzoGiornalieroStatus" ng-model="stopPoint.prezzoGiornaliero" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoGiornaliero.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoGiornaliero.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoGiornalieroStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoGiornaliero.$error && formModifica.$submitted" ng-messages="formModifica.prezzoGiornaliero.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoSettimanale.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoSettimanale.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoSettimanale" translate>label.prezzoSettimanale</label>
+											<input type="number" name="prezzoSettimanale" class="form-control" id="prezzoSettimanale" aria-describedby="prezzoSettimanaleStatus" ng-model="stopPoint.prezzoSettimanale" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoSettimanale.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoSettimanale.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoSettimanaleStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoSettimanale.$error && formModifica.$submitted" ng-messages="formModifica.prezzoSettimanale.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-class="{'has-error has-feedback': formModifica.prezzoParticolare.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoParticolare.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoParticolare" translate>label.prezzoParticolare</label>
+											<input type="text" name="prezzoParticolare" class="form-control" id="prezzoParticolare" aria-describedby="prezzoParticolareStatus" ng-model="stopPoint.prezzoParticolare" maxlength="200" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoParticolare.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoParticolare.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoParticolareStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoParticolare.$error && formModifica.$submitted" ng-messages="formModifica.prezzoParticolare.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.acqua.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.acqua.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/acqua.png"><label class="control-label label-icon" for="acqua" translate>label.acqua</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.acqua == '1'}">
+								                    <input type="radio" id="acqua" class="form-control" name="acqua" ng-model="stopPoint.acqua" ng-checked="stopPoint.acqua == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.acqua == ''}">
+								                    <input type="radio" id="acqua" class="form-control" name="acqua" ng-model="stopPoint.acqua" ng-checked="stopPoint.acqua == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.acqua == '0'}">
+								                    <input type="radio" id="acqua" class="form-control" name="acqua" ng-model="stopPoint.acqua" ng-checked="stopPoint.acqua == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.scaricoCassetta.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.scaricoCassetta.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/scaricoCassetta.png"><label class="control-label label-icon" for="scaricoCassetta" translate>label.scaricoCassetta</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoCassetta == '1'}">
+								                    <input type="radio" id="scaricoCassetta" class="form-control" name="scaricoCassetta" ng-model="stopPoint.scaricoCassetta" ng-checked="stopPoint.scaricoCassetta == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoCassetta == ''}">
+								                    <input type="radio" id="scaricoCassetta" class="form-control" name="scaricoCassetta" ng-model="stopPoint.scaricoCassetta" ng-checked="stopPoint.scaricoCassetta == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoCassetta == '0'}">
+								                    <input type="radio" id="scaricoCassetta" class="form-control" name="scaricoCassetta" ng-model="stopPoint.scaricoCassetta" ng-checked="stopPoint.scaricoCassetta == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.scaricoPozzetto.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.scaricoPozzetto.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/scaricoPozzetto.png"><label class="control-label label-icon" for="scaricoPozzetto" translate>label.scaricoPozzetto</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoPozzetto == '1'}">
+								                    <input type="radio" id="scaricoPozzetto" class="form-control" name="scaricoPozzetto" ng-model="stopPoint.scaricoPozzetto" ng-checked="stopPoint.scaricoPozzetto == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoPozzetto == ''}">
+								                    <input type="radio" id="scaricoPozzetto" class="form-control" name="scaricoPozzetto" ng-model="stopPoint.scaricoPozzetto" ng-checked="stopPoint.scaricoPozzetto == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.scaricoPozzetto == '0'}">
+								                    <input type="radio" id="scaricoPozzetto" class="form-control" name="scaricoPozzetto" ng-model="stopPoint.scaricoPozzetto" ng-checked="stopPoint.scaricoPozzetto == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoService.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoService.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoService" translate>label.prezzoService</label>
+											<input type="number" name="prezzoService" class="form-control" id="prezzoService" aria-describedby="prezzoServiceStatus" ng-model="stopPoint.prezzoService" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoService.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoService.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoServiceStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoService.$error && formModifica.$submitted" ng-messages="formModifica.prezzoService.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.corrente.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.corrente.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/corrente.png"><label class="control-label label-icon" for="corrente" translate>label.corrente</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.corrente == '1'}">
+								                    <input type="radio" id="corrente" class="form-control" name="corrente" ng-model="stopPoint.corrente" ng-checked="stopPoint.corrente == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.corrente == ''}">
+								                    <input type="radio" id="corrente" class="form-control" name="corrente" ng-model="stopPoint.corrente" ng-checked="stopPoint.corrente == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.corrente == '0'}">
+								                    <input type="radio" id="corrente" class="form-control" name="corrente" ng-model="stopPoint.corrente" ng-checked="stopPoint.corrente == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.prezzoCorrente.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.prezzoCorrente.$valid && formModifica.$submitted}">
+											<label class="control-label" for="prezzoCorrente" translate>label.prezzoCorrente</label>
+											<input type="number" name="prezzoCorrente" class="form-control" id="prezzoCorrente" aria-describedby="prezzoCorrenteStatus" ng-model="stopPoint.prezzoCorrente" pattern="^-?\d+\.?\d*$" />
+											<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formModifica.prezzoCorrente.$invalid && formModifica.$submitted, 'glyphicon-ok': formModifica.prezzoCorrente.$valid && formModifica.$submitted}" aria-hidden="true"></span>
+											<span id="prezzoCorrenteStatus" class="sr-only">(success)</span>
+											<div class="text-danger" ng-show="formModifica.prezzoCorrente.$error && formModifica.$submitted" ng-messages="formModifica.prezzoCorrente.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h4><span translate>label.additionalservices</span></h4>
+							</div>
+							<div class="panel-body">
+								<div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-class="{'has-error has-feedback': formModifica.tipoPiazzola.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.tipoPiazzola.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/tipoPiazzola.png"><label class="control-label label-icon" for="tipoPiazzola" translate>label.tipoPiazzola</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default col-xs-12" ng-class="{active: stopPoint.tipoPiazzola == 'ST'}">
+								                    <input type="radio" id="tipoPiazzola" class="form-control" name="tipoPiazzola" ng-model="stopPoint.tipoPiazzola" ng-checked="stopPoint.tipoPiazzola == 'ST'" value="ST" /> <span translate>label.ST</span>
+								                </label> 
+								                <label class="btn btn-default col-xs-12" ng-class="{active: stopPoint.tipoPiazzola == 'AS'}">
+								                    <input type="radio" id="tipoPiazzola" class="form-control" name="tipoPiazzola" ng-model="stopPoint.tipoPiazzola" ng-checked="stopPoint.tipoPiazzola == 'AS'" value="AS" /> <span translate>label.AS</span>
+								                </label> 
+								                <label class="btn btn-default col-xs-12" ng-class="{active: stopPoint.tipoPiazzola == 'ER'}">
+								                    <input type="radio" id="tipoPiazzola" class="form-control" name="tipoPiazzola" ng-model="stopPoint.tipoPiazzola" ng-checked="stopPoint.tipoPiazzola == 'ER'" value="ER" /> <span translate>label.ER</span>
+								                </label> 
+								                <label class="btn btn-default col-xs-12" ng-class="{active: stopPoint.tipoPiazzola == 'MA'}">
+								                    <input type="radio" id="tipoPiazzola" class="form-control" name="tipoPiazzola" ng-model="stopPoint.tipoPiazzola" ng-checked="stopPoint.tipoPiazzola == 'MA'" value="MA" /> <span translate>label.MA</span>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.accessoCustodito.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.accessoCustodito.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/accessoCustodito.png"><label class="control-label label-icon" for="accessoCustodito" translate>label.accessoCustodito</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.accessoCustodito == '1'}">
+								                    <input type="radio" id="accessoCustodito" class="form-control" name="accessoCustodito" ng-model="stopPoint.accessoCustodito" ng-checked="stopPoint.accessoCustodito == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.accessoCustodito == ''}">
+								                    <input type="radio" id="accessoCustodito" class="form-control" name="accessoCustodito" ng-model="stopPoint.accessoCustodito" ng-checked="stopPoint.accessoCustodito == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.accessoCustodito == '0'}">
+								                    <input type="radio" id="accessoCustodito" class="form-control" name="accessoCustodito" ng-model="stopPoint.accessoCustodito" ng-checked="stopPoint.accessoCustodito == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.videosorveglianza.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.videosorveglianza.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/videosorveglianza.png"><label class="control-label label-icon" for="videosorveglianza" translate>label.videosorveglianza</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.videosorveglianza == '1'}">
+								                    <input type="radio" id="videosorveglianza" class="form-control" name="videosorveglianza" ng-model="stopPoint.videosorveglianza" ng-checked="stopPoint.videosorveglianza == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.videosorveglianza == ''}">
+								                    <input type="radio" id="videosorveglianza" class="form-control" name="videosorveglianza" ng-model="stopPoint.videosorveglianza" ng-checked="stopPoint.videosorveglianza == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.videosorveglianza == '0'}">
+								                    <input type="radio" id="videosorveglianza" class="form-control" name="videosorveglianza" ng-model="stopPoint.videosorveglianza" ng-checked="stopPoint.videosorveglianza == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.notte.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.notte.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/notte.png"><label class="control-label label-icon" for="notte" translate>label.notte</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.notte == '1'}">
+								                    <input type="radio" id="notte" class="form-control" name="notte" ng-model="stopPoint.notte" ng-checked="stopPoint.notte == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.notte == ''}">
+								                    <input type="radio" id="notte" class="form-control" name="notte" ng-model="stopPoint.notte" ng-checked="stopPoint.notte == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.notte == '0'}">
+								                    <input type="radio" id="notte" class="form-control" name="notte" ng-model="stopPoint.notte" ng-checked="stopPoint.notte == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.illuminazione.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.illuminazione.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/illuminazione.png"><label class="control-label label-icon" for="illuminazione" translate>label.illuminazione</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.illuminazione == '1'}">
+								                    <input type="radio" id="illuminazione" class="form-control" name="illuminazione" ng-model="stopPoint.illuminazione" ng-checked="stopPoint.illuminazione == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.illuminazione == ''}">
+								                    <input type="radio" id="illuminazione" class="form-control" name="illuminazione" ng-model="stopPoint.illuminazione" ng-checked="stopPoint.illuminazione == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.illuminazione == '0'}">
+								                    <input type="radio" id="illuminazione" class="form-control" name="illuminazione" ng-model="stopPoint.illuminazione" ng-checked="stopPoint.illuminazione == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.ombra.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.ombra.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/ombra.png"><label class="control-label label-icon" for="ombra" translate>label.ombra</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.ombra == '1'}">
+								                    <input type="radio" id="ombra" class="form-control" name="ombra" ng-model="stopPoint.ombra" ng-checked="stopPoint.ombra == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.ombra == ''}">
+								                    <input type="radio" id="ombra" class="form-control" name="ombra" ng-model="stopPoint.ombra" ng-checked="stopPoint.ombra == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.ombra == '0'}">
+								                    <input type="radio" id="ombra" class="form-control" name="ombra" ng-model="stopPoint.ombra" ng-checked="stopPoint.ombra == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.wifi.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.wifi.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/wifi.png"><label class="control-label label-icon" for="wifi" translate>label.wifi</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.wifi == '1'}">
+								                    <input type="radio" id="wifi" class="form-control" name="wifi" ng-model="stopPoint.wifi" ng-checked="stopPoint.wifi == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.wifi == ''}">
+								                    <input type="radio" id="wifi" class="form-control" name="wifi" ng-model="stopPoint.wifi" ng-checked="stopPoint.wifi == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.wifi == '0'}">
+								                    <input type="radio" id="wifi" class="form-control" name="wifi" ng-model="stopPoint.wifi" ng-checked="stopPoint.wifi == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.bagni.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.bagni.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/bagni.png"><label class="control-label label-icon" for="bagni" translate>label.bagni</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bagni == '1'}">
+								                    <input type="radio" id="bagni" class="form-control" name="bagni" ng-model="stopPoint.bagni" ng-checked="stopPoint.bagni == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bagni == ''}">
+								                    <input type="radio" id="bagni" class="form-control" name="bagni" ng-model="stopPoint.bagni" ng-checked="stopPoint.bagni == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bagni == '0'}">
+								                    <input type="radio" id="bagni" class="form-control" name="bagni" ng-model="stopPoint.bagni" ng-checked="stopPoint.bagni == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.docce.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.docce.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/docce.png"><label class="control-label label-icon" for="docce" translate>label.docce</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.docce == '1'}">
+								                    <input type="radio" id="docce" class="form-control" name="docce" ng-model="stopPoint.docce" ng-checked="stopPoint.docce == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.docce == ''}">
+								                    <input type="radio" id="docce" class="form-control" name="docce" ng-model="stopPoint.docce" ng-checked="stopPoint.docce == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.docce == '0'}">
+								                    <input type="radio" id="docce" class="form-control" name="docce" ng-model="stopPoint.docce" ng-checked="stopPoint.docce == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.picnic.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.picnic.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/picnic.png"><label class="control-label label-icon" for="picnic" translate>label.picnic</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.picnic == '1'}">
+								                    <input type="radio" id="picnic" class="form-control" name="picnic" ng-model="stopPoint.picnic" ng-checked="stopPoint.picnic == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.picnic == ''}">
+								                    <input type="radio" id="picnic" class="form-control" name="picnic" ng-model="stopPoint.picnic" ng-checked="stopPoint.picnic == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.picnic == '0'}">
+								                    <input type="radio" id="picnic" class="form-control" name="picnic" ng-model="stopPoint.picnic" ng-checked="stopPoint.picnic == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.bambini.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.bambini.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/bambini.png"><label class="control-label label-icon" for="bambini" translate>label.bambini</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bambini == '1'}">
+								                    <input type="radio" id="bambini" class="form-control" name="bambini" ng-model="stopPoint.bambini" ng-checked="stopPoint.bambini == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bambini == ''}">
+								                    <input type="radio" id="bambini" class="form-control" name="bambini" ng-model="stopPoint.bambini" ng-checked="stopPoint.bambini == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.bambini == '0'}">
+								                    <input type="radio" id="bambini" class="form-control" name="bambini" ng-model="stopPoint.bambini" ng-checked="stopPoint.bambini == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.animali.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.animali.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/animali.png"><label class="control-label label-icon" for="animali" translate>label.animali</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.animali == '1'}">
+								                    <input type="radio" id="animali" class="form-control" name="animali" ng-model="stopPoint.animali" ng-checked="stopPoint.animali == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.animali == ''}">
+								                    <input type="radio" id="animali" class="form-control" name="animali" ng-model="stopPoint.animali" ng-checked="stopPoint.animali == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.animali == '0'}">
+								                    <input type="radio" id="animali" class="form-control" name="animali" ng-model="stopPoint.animali" ng-checked="stopPoint.animali == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+										<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-class="{'has-error has-feedback': formModifica.fermata.$invalid && formModifica.$submitted, 'has-success has-feedback': formModifica.fermata.$valid && formModifica.$submitted}">
+											<img class="img-icon" ng-src="img/icons/fermata.png"><label class="control-label label-icon" for="fermata" translate>label.fermata</label>
+											<div class="btn-group btn-group-lg" data-toggle="buttons">
+								                <label class="btn btn-default" ng-class="{active: stopPoint.fermata == '1'}">
+								                    <input type="radio" id="fermata" class="form-control" name="fermata" ng-model="stopPoint.fermata" ng-checked="stopPoint.fermata == '1'" value="1" /><i class="fa fa-check text-success"></i>
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.fermata == ''}">
+								                    <input type="radio" id="fermata" class="form-control" name="fermata" ng-model="stopPoint.fermata" ng-checked="stopPoint.fermata == ''" value="" /> -
+								                </label> 
+								                <label class="btn btn-default" ng-class="{active: stopPoint.fermata == '0'}">
+								                    <input type="radio" id="fermata" class="form-control" name="fermata" ng-model="stopPoint.fermata" ng-checked="stopPoint.fermata == '0'" value="0" /><i class="fa fa-ban text-danger"></i>
+								                </label> 
+								            </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align: center;">
+					<button type="button" class="btn btn-success btn-lg text-uppercase" ng-click="modify(formModifica)" translate>label.conferma</button>
+				</div>
+				</form>
+			</div>
+		</div>
+    </div>

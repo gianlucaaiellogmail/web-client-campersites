@@ -1,0 +1,46 @@
+    <div class="row">
+    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<form name="formPhoto" novalidate="novalidate">
+				<div class="modal-header">
+					<h3 class="modal-title" translate>label.caricafoto</h3>
+				</div>
+				<div class="modal-body">
+					<div class="list-group-item">
+					    <div class="row">
+					    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div ngf-drop="uploadFiles($files)" ngf-select="uploadFiles($files)" ng-model="files" class="drop-box" 
+							    	ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="false"
+							    	ngf-resize="{width: 2048, height: 1496}" ngf-resize-if="$width > 2048 || $height > 1496"
+							        ngf-max-size="10MB" accept="image/*" ngf-pattern="'image/*'"><span translate>desc.caricafoto</span></div>
+							    <div class="text-danger" ng-if="formPhoto.file.$error" ng-messages="formPhoto.file.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					    	</div>
+					    </div>
+				    </div>
+				    <div class="list-group-item">
+					    <div class="row">
+						    <div ng-repeat="file in files" class="col-xs-12 col-sm-4 col-md-3 col-lg-3" style="margin-bottom: 15px;">
+					    		<img ngf-src="!file.$error && file" class="thumbnail" style="height: 150px; width: 100%;">
+					    		<button type="button" class="btn btn-danger" style="float: left; margin-left: 5px;" ng-show="file && !file.progress" ng-click="removeFile(files, $index)"><i class="fa fa-ban"></i></button>
+					    		<button type="button" class="btn btn-success" style="float: right; margin-right: 5px;" ng-show="file && !file.progress" ng-click="uploadFile(file)"><i class="fa fa-check"></i></button>
+								<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding-left: 0;" ng-show="file.progress >= 0 && file.progress < 100">
+									<div class="progress">
+										<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress}}%"></div>
+									</div>
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right" style="padding-right: 0;" ng-show="file.progress >= 0 && file.progress < 100">
+									<span>{{file.progress}}%</span>
+								</div>
+						    </div>
+					    </div>
+				    </div>
+				    <div ng-if="system" class="list-group-item">
+					    <div class="row">
+					        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+							</div>
+					    </div>
+				    </div>
+				</div>
+			</form>
+    	</div>
+    </div>	  

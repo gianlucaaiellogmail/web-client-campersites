@@ -1,0 +1,131 @@
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="modal-body">
+				<div class="item item-text-wrap" style="text-align: center">
+					<p><span translate>desc.fbMessage</span></p>
+					<a class="btn btn-social btn-facebook" ng-click="fbLogin()">
+						<i class="fa fa-facebook"></i> <span translate>label.entroconfacebook</span>
+					</a>
+				</div>
+			</div>
+        </div>
+      </div>
+      <hr class="divider" />
+      <div ng-if="msg" class="center-block row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div ng-if="system" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+			<div ng-if="unauthorized" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.entrako</span></div>
+			<div ng-if="notAuthentication" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.attivazione</span><button type="button" class="btn btn-success text-uppercase" style="margin-left: 5px;" ng-click="activationEmail()" translate>label.invia</button></div>
+			<div ng-if="entrako" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.entrako</span></div>
+			<div ng-if="registramiko" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.registramiko</span></div>
+			<div ng-if="regOk" class="alert alert-success" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>label.regOk</span></div>
+		</div>
+	  </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<form ng-if="!restorePwd" name="formEntra" novalidate="novalidate">
+				<div class="modal-header">
+					<h3 class="modal-title" translate>label.entra</h3>
+				</div>
+				<div class="modal-body">
+					<div class="form-group" ng-class="{'has-error has-feedback': formEntra.email.$invalid && formEntra.$submitted, 'has-success has-feedback': formEntra.email.$valid && formEntra.$submitted}">
+						<label class="control-label" for="entroEmail" translate>label.email</label>
+						<input type="email" name="email" class="form-control" id="entroEmail" aria-describedby="entroEmailStatus" ng-model="user.email" maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formEntra.email.$invalid && formEntra.$submitted, 'glyphicon-ok': formEntra.email.$valid && formEntra.$submitted}" aria-hidden="true"></span>
+						<span id="entroEmailStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-if="formEntra.email.$error && formEntra.$submitted" ng-messages="formEntra.email.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formEntra.password.$invalid && formEntra.$submitted, 'has-success has-feedback': formEntra.password.$valid && formEntra.$submitted}">
+						<label class="control-label" for="entroPassword" translate>label.password</label>
+						<input type="password" name="password" class="form-control" id="entroPassword" aria-describedby="entroPasswordStatus" ng-model="user.password" maxlength="50" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formEntra.password.$invalid && formEntra.$submitted, 'glyphicon-ok': formEntra.password.$valid && formEntra.$submitted}" aria-hidden="true"></span>
+						<span id="entroPasswordStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-if="formEntra.password.$error && formEntra.$submitted" ng-messages="formEntra.password.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+<!-- 					<div class="checkbox">
+						<input type="checkbox" id="ricordami" />
+						<label for="ricordami">{{'label.ricordami' | translate}}</label>
+					</div>
+ -->				<button type="button" class="btn btn-link text-danger" ng-click="toRestore()" translate>label.passwordpersa</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success text-uppercase" ng-click="login(formEntra)" translate>label.entro</button>
+				</div>
+			</form>
+			<form ng-if="restorePwd" name="formRestorePwd" novalidate="novalidate">
+				<div class="modal-header">
+					<h3 class="modal-title" translate>label.restorePwd</h3>
+				</div>
+				<div class="modal-body">
+					<div class="form-group" ng-class="{'has-error has-feedback': formRestorePwd.email.$invalid && formRestorePwd.$submitted, 'has-success has-feedback': formRestorePwd.email.$valid && formRestorePwd.$submitted}">
+						<label class="control-label" for="restoreEmail" translate>label.email</label>
+						<input type="email" name="email" class="form-control" id="restoreEmail" aria-describedby="restoreEmailStatus" ng-model="user.email" maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRestorePwd.email.$invalid && formRestorePwd.$submitted, 'glyphicon-ok': formRestorePwd.email.$valid && formRestorePwd.$submitted}" aria-hidden="true"></span>
+						<span id="restoreEmailStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-if="formRestorePwd.email.$error && formRestorePwd.$submitted" ng-messages="formRestorePwd.email.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link text-danger" ng-click="toLogin()" translate>label.annulla</button>
+					<button type="button" class="btn btn-success text-uppercase" ng-click="sendEmailPwd(formRestorePwd)" translate>label.invia</button>
+				</div>
+			</form>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  			<form name="formRegistrami" novalidate="novalidate">
+				<div class="modal-header">
+					<h3 class="modal-title" translate>label.registrazione</h3>
+				</div>
+				<div class="modal-body">
+					<div class="form-group" ng-class="{'has-error has-feedback': formRegistrami.nickname.$invalid && formRegistrami.$submitted, 'has-success has-feedback': formRegistrami.nickname.$valid && formRegistrami.$submitted}">
+						<label class="control-label" for="registraNickname" translate>label.nickname</label>
+						<input type="text" name="nickname" class="form-control" id="registraNickname" aria-describedby="registraNicknameStatus" ng-model="userReg.nickname" ng-maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRegistrami.nickname.$invalid && formRegistrami.$submitted, 'glyphicon-ok': formRegistrami.nickname.$valid && formRegistrami.$submitted}" aria-hidden="true"></span>
+						<span id="registraNicknameStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formRegistrami.nickname.$error && formRegistrami.$submitted" ng-messages="formRegistrami.nickname.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formRegistrami.email.$invalid && formRegistrami.$submitted, 'has-success has-feedback': formRegistrami.email.$valid && formRegistrami.$submitted}">
+						<label class="control-label" for="registraEmail" translate>label.email</label>
+						<input type="email" name="email" class="form-control" id="registraEmail" aria-describedby="registraEmailStatus" ng-model="userReg.email" ng-maxlength="200" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRegistrami.email.$invalid && formRegistrami.$submitted, 'glyphicon-ok': formRegistrami.email.$valid && formRegistrami.$submitted}" aria-hidden="true"></span>
+						<span id="registraEmailStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formRegistrami.email.$error && formRegistrami.$submitted" ng-messages="formRegistrami.email.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formRegistrami.confirmEmail.$invalid && formRegistrami.$submitted, 'has-success has-feedback': formRegistrami.confirmEmail.$valid && formRegistrami.$submitted}">
+						<label class="control-label" for="registraConfirmEmail" translate>label.confirmemail</label>
+						<input type="email" name="confirmEmail" class="form-control" id="registraConfirmEmail" aria-describedby="registraConfirmEmailStatus" ng-model="userReg.confirmEmail" ng-maxlength="200" required same-as="userReg.email"/>
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRegistrami.confirmEmail.$invalid && formRegistrami.$submitted, 'glyphicon-ok': formRegistrami.confirmEmail.$valid && formRegistrami.$submitted}" aria-hidden="true"></span>
+						<span id="registraConfirmEmailStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formRegistrami.confirmEmail.$error && formRegistrami.$submitted" ng-messages="formRegistrami.confirmEmail.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formRegistrami.password.$invalid && formRegistrami.$submitted, 'has-success has-feedback': formRegistrami.password.$valid && formRegistrami.$submitted}">
+						<label class="control-label" for="registraPassword" translate>label.password</label>
+						<input type="password" name="password" class="form-control" id="registraPassword" aria-describedby="registraPasswordStatus" ng-model="userReg.password" ng-maxlength="50" required />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRegistrami.password.$invalid && formRegistrami.$submitted, 'glyphicon-ok': formRegistrami.password.$valid && formRegistrami.$submitted}" aria-hidden="true"></span>
+						<span id="registraPasswordStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formRegistrami.password.$error && formRegistrami.$submitted" ng-messages="formRegistrami.password.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<div class="form-group" ng-class="{'has-error has-feedback': formRegistrami.confirmPassword.$invalid && formRegistrami.$submitted, 'has-success has-feedback': formRegistrami.confirmPassword.$valid && formRegistrami.$submitted}">
+						<label class="control-label" for="registraConfirmPassword" translate>label.confirmpassword</label>
+						<input type="password" name="confirmPassword" class="form-control" id="registraConfirmPassword" aria-describedby="registraConfirmPasswordStatus" ng-model="userReg.confirmPassword" ng-maxlength="50" required same-as="userReg.password" />
+						<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formRegistrami.confirmPassword.$invalid && formRegistrami.$submitted, 'glyphicon-ok': formRegistrami.confirmPassword.$valid && formRegistrami.$submitted}" aria-hidden="true"></span>
+						<span id="registraConfirmPasswordStatus" class="sr-only">(success)</span>
+						<div class="text-danger" ng-show="formRegistrami.confirmPassword.$error && formRegistrami.$submitted" ng-messages="formRegistrami.confirmPassword.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+					</div>
+					<p><span translate>label.emailattivazione</span></p>
+				</div>
+			</form>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success text-uppercase" ng-click="signup(formRegistrami)" translate>label.registrami</button>
+			</div>
+       </div>
+      </div>
+      <hr class="divider" />
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="modal-body">
+				<p><span translate>desc.condizioniLogin</span></p>
+			</div>
+        </div>
+      </div>
+	  

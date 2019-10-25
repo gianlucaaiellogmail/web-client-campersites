@@ -1,0 +1,12 @@
+# robotstxt.org/
+
+User-agent: *
+Sitemap: http://www.campersites.info/sitemap.xml
+
+User-Agent: Googlebot
+Allow: .js
+Allow: .css
+
+User-Agent: Googlebot-Mobile
+Allow: .js
+Allow: .css

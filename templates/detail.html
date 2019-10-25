@@ -1,0 +1,262 @@
+    <div class="container">
+		<div class="row">
+			<div id="detail" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 30px">
+				<div class="panel panel-primary">
+					<div ng-if="errore" class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i><span translate>error.server</span></div>
+					<div class="panel-heading" style="overflow: hidden;">
+						<div class="detail-img"><img ng-src="img/icons/{{::stopPoint.typeId}}.png"></div>
+						<div class="col-xs-9 col-sm-10 col-md-11 col-lg-11 text-left">
+							<h2 class="text-nowrap" style="margin: 0px; overflow: hidden; text-overflow: ellipsis;">{{::stopPoint.description}}</h2>
+							<h4 class="text-nowrap" style="margin-bottom: 0px; overflow: hidden; text-overflow: ellipsis;"><strong>{{'nations.'+stopPoint.nation | translate}}</strong> - {{::stopPoint.locality}}</h4>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right" style="line-height: 58px;">
+							<span style="margin-right: 5px;"><span translate>label.aggiornato</span>{{::stopPoint.modified | date:'dd MMMM yyyy'}}</span>
+							<button ng-if="user" type="button" class="btn btn-default btn-lg" ng-click="toModify()">
+								<i class="fa fa-pencil-square-o fa-lg"></i>
+								<span style="margin-left: 5px;" class="hidden-xs" translate>label.modifica</span>
+							</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+									<button ng-if="isNavigable()" type="button" style="float: left; margin-right: 15px;" class="btn btn-default btn-lg" ng-click="sendToNavigator(stopPoint.latitude, stopPoint.longitude)">
+										<i class="fa fa-location-arrow fa-lg"></i>
+										<span style="margin-left: 5px;" class="hidden-xs" translate>label.toNavigator</span>
+									</button>
+									<p style="margin: 0 0 6px;"><strong><span translate>label.latitude</span>:</strong> {{stopPoint.latitude}}</p>
+									<p style="margin: 0;"><strong><span translate>label.longitude</span>:</strong> {{stopPoint.longitude}}</p>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-right" style="line-height: 46px;">
+									<span class="visible-lg-inline-block" style="margin-right: 5px;"><strong><span translate>label.toShare</span></strong></span>
+									<!-- Twitter -->
+									<a ng-href="http://twitter.com/home?status={{::url}}" title="Share on Twitter" target="_blank" class="btn btn-twitter"><i class="fa fa-twitter"></i><span style="margin-left: 5px;" class="hidden-xs"> Twitter</span></a>
+									 <!-- Facebook -->
+									<a ng-href="https://www.facebook.com/sharer/sharer.php?u={{::url}}" title="Share on Facebook" target="_blank" class="btn btn-facebook"><i class="fa fa-facebook"></i><span style="margin-left: 5px;" class="hidden-xs"> Facebook</span></a>
+									<!-- Google+ -->
+									<a ng-href="https://plus.google.com/share?url={{::url}}" title="Share on Google+" target="_blank" class="btn btn-googleplus"><i class="fa fa-google-plus"></i><span style="margin-left: 5px;" class="hidden-xs"> Google+</span></a>								
+									<!-- Email -->
+									<a ng-href="mailto:?subject=CamperSites.info&amp;body=CamperSites.info:{{::url}}" title="Share via Email" target="_blank" class="btn btn-email"><i class="fa fa-envelope-o"></i> <span style="margin-left: 5px;" class="hidden-xs" translate>label.email</span></a>
+								</div>
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div id="map" class="thumbnail" style="height: 384px">
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-4">
+									<p style="margin: 0;">{{label_rating}}: <strong>{{stopPoint.rating}}%</strong></p>
+									<div class="progress">
+										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{stopPoint.rating}}" aria-valuemin="0" aria-valuemax="100" style="width: {{stopPoint.rating}}%"></div>
+									</div>
+								</div>
+								<div ng-if="user" class="col-xs-9 col-sm-7 col-md-5 col-lg-5 text-center">
+									<label class="control-label" style="margin-right = 5px;" for="howRated" translate>label.tuorating</label>
+									<div class="btn-group btn-group-lg" data-toggle="buttons">
+						                <label class="btn btn-default" ng-class="{active: stopPoint.howRated == 0}">
+						                    <input type="radio" id="howRated" class="form-control" name="howRated" ng-model="stopPoint.howRated" ng-checked="stopPoint.howRated == 0" value="0" ng-click="rateIt()" /><i class="fa fa-frown-o fa-lg"></i>
+						                </label> 
+						                <label class="btn btn-default" ng-class="{active: stopPoint.howRated == 2.5}">
+						                    <input type="radio" id="howRated" class="form-control" name="howRated" ng-model="stopPoint.howRated" ng-checked="stopPoint.howRated == 2.5" value="2.5" ng-click="rateIt()" /><i class="fa fa-meh-o fa-lg"></i>
+						                </label> 
+						                <label class="btn btn-default" ng-class="{active: stopPoint.howRated == 5}">
+						                    <input type="radio" id="howRated" class="form-control" name="howRated" ng-model="stopPoint.howRated" ng-checked="stopPoint.howRated == 5" value="5" ng-click="rateIt()" /><i class="fa fa-smile-o fa-lg"></i>
+						                </label>
+						            </div>
+								</div>
+								<div ng-if="user" class="col-xs-3 col-sm-2 col-md-4 col-lg-3" style="text-align: right;">
+									<label ng-if="!stopPoint.preferito" class="control-label hidden-xs hidden-sm" style="margin-right = 5px;" for="preferito" translate>label.addpreferiti</label>
+									<label ng-if="stopPoint.preferito" class="control-label hidden-xs hidden-sm" style="margin-right = 5px;" for="preferito" translate>label.removepreferiti</label>
+									<div class="btn-group btn-group-lg" data-toggle="buttons">
+						                <label class="btn btn-default" ng-class="{active: stopPoint.preferito}">
+						                    <input type="checkbox" id="preferito" class="form-control" name="preferito" ng-model="stopPoint.preferito" ng-checked="stopPoint.preferito" ng-click="togglePreferito()" /><i class="fa fa-heart-o fa-lg"></i>
+						                </label> 
+						            </div>
+								</div>
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="height: 384px">
+									<div class="panel panel-primary" style="margin-top: 0; height: 384px;">
+										<div class="panel-heading" style="overflow: hidden;">
+											<h4><span translate>label.contatti</span></h4>
+										</div>
+										<div class="panel-body">
+											<p>
+												<span class="text-info btn-lg">
+													<i class="fa fa-calendar fa-2x" style="margin-right: 5px;"></i>
+													<span translate>label.chiusura</span>: <label>{{stopPoint.chiusura ? stopPoint.chiusura : ' - '}}</label>
+												</span>
+											</p>
+											<p>
+												<span class="text-info btn-lg">
+													<i class="fa fa-phone fa-2x" style="margin-right: 5px;"></i>
+													<a ng-if="stopPoint.telefono" ng-href="tel:{{::stopPoint.telefono}}">{{::stopPoint.telefono}}</a>
+													<label ng-if="!stopPoint.telefono"><em><span translate>label.nondisponibile</span></em></label>
+												</span>
+											</p>
+											<p class="text-nowrap" style="margin: 0px; overflow: hidden; text-overflow: ellipsis;">
+												<span class="text-info btn-lg" ng-href="stopPoint.homepage">
+													<i class="fa fa-globe fa-2x" style="margin-right: 5px;"></i>
+													<a ng-if="stopPoint.homepage" ng-href="{{::stopPoint.homepage}}">{{::stopPoint.homepage}}</a>
+													<label ng-if="!stopPoint.homepage"><em><span translate>label.nondisponibile</span></em></label>
+												</span>
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+									<div class="thumbnail" style="height: 384px;">
+										<div ng-if="user" style="position: absolute; top:5px; right: 20px; z-index: 1;">
+											<button type="button" class="btn btn-default btn-lg" ng-click="openPhoto()">
+												<i class="fa fa-picture-o fa-lg" style="margin-right: 5px;"></i>
+												<span translate>label.caricafoto</span>
+											</button>
+										</div>
+										<carousel ng-if="stopPoint.photos.length > 1" interval="5000" no-wrap="false">
+											<slide ng-repeat="photo in stopPoint.photos">
+												<img class="img-responsive center-block" ng-src="http://www.campersites.info:8000/{{photo}}" />
+											</slide>
+										</carousel>
+										<div ng-if="stopPoint.photos.length <= 1" class="img-container">
+											<img ng-if="stopPoint.photos.length == 0" class="img-responsive center-block img-center" src="http://www.campersites.info:8000/no_image.gif" />
+											<img ng-if="stopPoint.photos.length == 1" class="img-responsive center-block img-center" ng-src="http://www.campersites.info:8000/{{stopPoint.photos[0]}}" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="panel panel-primary" style="margin-top: 0;">
+										<div class="panel-heading" style="overflow: hidden;">
+											<h4><span translate>label.informazioni</span></h4>
+										</div>
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoNotturno != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoNotturno</span>: <label class="{{stopPoint.prezzoNotturno > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoNotturno == 0 ? 'label.gratuito' : stopPoint.prezzoNotturno}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoOrario != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoOrario</span>: <label class="{{stopPoint.prezzoOrario > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoOrario == 0 ? 'label.gratuito' : stopPoint.prezzoOrario}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoGiornaliero != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoGiornaliero</span>: <label class="{{stopPoint.prezzoGiornaliero > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoGiornaliero == 0 ? 'label.gratuito' : stopPoint.prezzoGiornaliero}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoSettimanale != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoSettimanale</span>: <label class="{{stopPoint.prezzoSettimanale > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoSettimanale == 0 ? 'label.gratuito' : stopPoint.prezzoSettimanale}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoParticolare" != null><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoParticolare</span>: <label class="{{stopPoint.prezzoParticolare != '' ? 'text-danger' : 'text-success'}} text-nowrap" style="margin: 0px; text-overflow: ellipsis;">{{::stopPoint.prezzoParticolare}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.acqua != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/acqua.png"><i ng-if="stopPoint.acqua == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.acqua</span>: <label class="{{stopPoint.acqua == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.acqua == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.scaricoCassetta != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/scaricoCassetta.png"><i ng-if="stopPoint.scaricoCassetta == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.scaricoCassetta</span>: <label class="{{stopPoint.scaricoCassetta == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.scaricoCassetta == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.scaricoPozzetto != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/scaricoPozzetto.png"><i ng-if="stopPoint.scaricoPozzetto == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.scaricoPozzetto</span>: <label class="{{stopPoint.scaricoPozzetto == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.scaricoPozzetto == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoService != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoService</span>: <label class="{{stopPoint.prezzoService > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoService == 0 ? 'label.gratuito' : stopPoint.prezzoService}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.corrente != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/corrente.png"><i ng-if="stopPoint.corrente == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.corrente</span>: <label class="{{stopPoint.corrente == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.corrente == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.prezzoCorrente != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/prezzo.png"></span>
+														<span translate>label.prezzoCorrente</span>: <label class="{{stopPoint.prezzoCorrente > 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.prezzoCorrente == 0 ? 'label.gratuito' : stopPoint.prezzoCorrente}}</label></p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+													<p style="line-height: 32px;" ng-if="stopPoint.tipoPiazzola"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/tipoPiazzola.png"></span>
+														<span translate>label.tipoPiazzola</span>: <label translate>{{'label.'+stopPoint.tipoPiazzola}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.accessoCustodito != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/accessoCustodito.png"><i ng-if="stopPoint.accessoCustodito == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.accessoCustodito</span>: <label class="{{stopPoint.accessoCustodito == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.accessoCustodito == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.videosorveglianza != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/videosorveglianza.png"><i ng-if="stopPoint.videosorveglianza == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.videosorveglianza</span>: <label class="{{stopPoint.videosorveglianza == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.videosorveglianza == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.notte != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/notte.png"><i ng-if="stopPoint.notte == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.notte</span>: <label class="{{stopPoint.notte == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.notte == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.illuminazione != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/illuminazione.png"><i ng-if="stopPoint.illuminazione == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.illuminazione</span>: <label class="{{stopPoint.illuminazione == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.illuminazione == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.ombra != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/ombra.png"><i ng-if="stopPoint.ombra == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.ombra</span>: <label class="{{stopPoint.ombra == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.ombra == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.posti != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/posti.png"></span>
+														<span translate>label.posti</span>: <label class="{{stopPoint.posti != '' ? 'text-danger' : 'text-success'}}">{{::stopPoint.posti}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.maxHH != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/maxHH.png"></span>
+														<span translate>label.maxHH</span>: <label class="{{stopPoint.maxHH != '' ? 'text-danger' : 'text-success'}}">{{::stopPoint.maxHH}}</label></p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+													<p style="line-height: 32px;" ng-if="stopPoint.docce != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/docce.png"><i ng-if="stopPoint.docce == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.docce</span>: <label class="{{stopPoint.docce == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.docce == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.bagni != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/bagni.png"><i ng-if="stopPoint.bagni == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.bagni</span>: <label class="{{stopPoint.bagni == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.bagni == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.bambini != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/bambini.png"><i ng-if="stopPoint.bambini == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.bambini</span>: <label class="{{stopPoint.bambini == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.bambini == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.picnic != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/picnic.png"><i ng-if="stopPoint.picnic == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.picnic</span>: <label class="{{stopPoint.picnic == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.picnic == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.animali != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/animali.png"><i ng-if="stopPoint.animali == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.animali</span>: <label class="{{stopPoint.animali == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.animali == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.fermata != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/fermata.png"><i ng-if="stopPoint.fermata == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.fermata</span>: <label class="{{stopPoint.fermata == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.fermata == 0 ? 'label.no' : 'label.si'}}</label></p>
+													<p style="line-height: 32px;" ng-if="stopPoint.wifi != null"><span class="fa-stack fa-lg"><img class="fa-stack-1x" src="img/icons/wifi.png"><i ng-if="stopPoint.wifi == 0" class="fa fa-ban fa-stack-2x text-danger"></i></span>
+														<span translate>label.wifi</span>: <label class="{{stopPoint.wifi == 0 ? 'text-danger' : 'text-success'}}" translate>{{stopPoint.wifi == 0 ? 'label.no' : 'label.si'}}</label></p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div class="panel panel-primary" style="margin-top: 0;">
+								<div class="panel-heading" style="overflow: hidden;">
+									<div style="float: left;">
+										<h4><span translate>label.reviews</span></h4>
+									</div>
+									<div ng-if="user" style="float: right; margin-left: 15px;">
+										<button type="button" class="btn btn-default btn-lg" ng-click="toggleReviewing()">
+											<i class="fa fa-commenting-o fa-lg"></i>
+											<span style="margin-left: 5px;" class="hidden-xs" translate>label.recensisci</span>
+										</button>
+									</div>
+								</div>
+								<div ng-if="user" ng-show="isReviewing">
+									<div class="well well-lg">
+								    	<div class="row">
+									        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<form name="formReview" novalidate="novalidate">
+													<div class="modal-body">
+														<div class="form-group" ng-class="{'has-error has-feedback': formReview.testo.$invalid && formReview.$submitted, 'has-success has-feedback': formReview.testo.$valid && formReview.$submitted}">
+															<label class="control-label" for="testo" translate>label.review</label>
+															<textarea name="testo" class="form-control" id="testo" aria-describedby="testoStatus" ng-model="review.testo" ng-maxlength="2000" rows="3" required ></textarea>
+															<span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formReview.testo.$invalid && formReview.$submitted, 'glyphicon-ok': formReview.testo.$valid && formReview.$submitted}" aria-hidden="true"></span>
+															<span id="reviewStatus" class="sr-only">(success)</span>
+															<div class="text-danger" ng-show="formReview.testo.$error && formReview.$submitted" ng-messages="formReview.testo.$error"><div ng-messages-include="includes/form_errors.html"></div></div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-success text-uppercase" ng-click="reviewIt(formReview)" translate>label.spedisci</button>
+													</div>
+												</form>
+									       	</div>
+								    	</div>
+      								</div>
+								</div>
+								<div class="panel-body">
+									<timeline>
+										<timeline-event ng-repeat="review in stopPoint.reviews">
+											<timeline-badge class="primary">
+												<img ng-src="img/flags/{{::review.userLocale}}-48.png" height="24px" />
+											</timeline-badge>
+											<timeline-panel class="primary">
+												<timeline-heading>
+													<h4><span class="text-uppercase">{{::review.userNickname}}</span> - {{::review.inserted | date:'dd MMMM yyyy'}}</h4>
+												</timeline-heading>
+												<p><em class="text-uppercase">{{::review.review}}</em></p>
+											</timeline-panel>
+										</timeline-event>
+									</timeline>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
